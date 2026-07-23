@@ -34,12 +34,12 @@ export function allCommands(): Command[] {
 
 // Sabere "Today" kartice iz svih app-ova.
 export async function loadDashboard(ctx: AppContext) {
-  const sections: { app: string; title: string; items: DashboardItem[] }[] = [];
+  const sections: { appId: string; app: string; title: string; items: DashboardItem[] }[] = [];
   for (const app of apps) {
     for (const card of app.dashboardCards ?? []) {
       try {
         const items = await card.load(ctx);
-        if (items.length) sections.push({ app: app.name, title: card.title, items });
+        if (items.length) sections.push({ appId: app.id, app: app.name, title: card.title, items });
       } catch (e) {
         // Jedan app koji padne ne smije srusiti cijeli dashboard.
         console.error(`[dashboard] ${app.id} nije uspio:`, e);

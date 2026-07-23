@@ -10,7 +10,7 @@ export async function getContext() {
 
   let { data: membership } = await db
     .from("household_members")
-    .select("household_id")
+    .select("household_id, display_name")
     .eq("user_id", user.id)
     .limit(1)
     .maybeSingle();
@@ -23,13 +23,19 @@ export async function getContext() {
       .select("id")
       .single();
     if (h) {
+      const name = user.email?.split("@")[0] ?? "Clan";
       await db.from("household_members").insert({
         household_id: h.id, user_id: user.id, role: "admin",
-        display_name: user.email?.split("@")[0] ?? "Clan",
+        display_name: name,
       });
-      membership = { household_id: h.id };
+      membership = { household_id: h.id, display_name: name };
     }
   }
 
-  return { db, user, householdId: membership?.household_id ?? null };
+  return {
+    db,
+    user,
+    householdId: membership?.household_id ?? null,
+    displayName: membership?.display_name ?? user.email?.split("@")[0] ?? "",
+  };
 }
