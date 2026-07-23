@@ -90,3 +90,5 @@ UI (podatkovni model `board`/`status` je spreman). Realtime sinhronizacija preko
 Supabase Realtime (baza je spremna).
 
 <!-- redeploy trigger -->
+
+<!-- deploy 2 -->
