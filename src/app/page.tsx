@@ -6,6 +6,7 @@ import { loadDashboard } from "@/lib/platform/registry";
 import { themeFor } from "@/lib/ui/appTheme";
 import { Sparkles } from "lucide-react";
 import { QuickCapture } from "@/components/QuickCapture";
+import { GlobalSearch } from "@/components/GlobalSearch";
 
 export const dynamic = "force-dynamic";
 
@@ -39,6 +40,11 @@ export default async function Dashboard() {
         </p>
       </header>
 
+      {/* Pretraga preko svega */}
+      <section className="mb-4">
+        <GlobalSearch />
+      </section>
+
       {/* Brzo unošenje (Quick capture) — zadatak / bilješka / podsjetnik */}
       <section className="mb-8">
         <QuickCapture />
@@ -51,6 +57,7 @@ export default async function Dashboard() {
           {sections.map((s, i) => {
             const t = themeFor(s.appId);
             const Icon = t.icon;
+            const overdueCount = s.items.filter((it) => it.tone === "overdue").length;
             return (
               <div
                 key={i}
@@ -61,17 +68,35 @@ export default async function Dashboard() {
                   <span className={`flex h-8 w-8 items-center justify-center rounded-lg ${t.iconBg} ${t.iconText}`}>
                     <Icon size={17} strokeWidth={2.2} />
                   </span>
-                  <h2 className="text-sm font-medium text-ink">{s.title}</h2>
+                  <h2 className="text-sm font-medium text-ink flex-1">{s.title}</h2>
+                  <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${t.iconBg} ${t.iconText}`}>
+                    {s.items.length}
+                  </span>
+                  {overdueCount > 0 && (
+                    <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-rose-soft text-rose">
+                      {overdueCount} kasni
+                    </span>
+                  )}
                 </div>
                 <ul className="divide-y divide-line">
-                  {s.items.map((it) => (
-                    <li key={it.id} className="px-4 py-2.5 flex items-center justify-between">
-                      <Link href={it.href ?? "#"} className="text-sm text-ink transition-colors hover:text-muted">
-                        {it.label}
-                      </Link>
-                      {it.meta && <span className="text-xs text-muted">{it.meta}</span>}
-                    </li>
-                  ))}
+                  {s.items.map((it) => {
+                    const overdue = it.tone === "overdue";
+                    return (
+                      <li key={it.id} className="px-4 py-2.5 flex items-center justify-between gap-3">
+                        <span className="flex items-center gap-2 min-w-0">
+                          {overdue && <span className="h-1.5 w-1.5 rounded-full bg-rose shrink-0" />}
+                          <Link href={it.href ?? "#"} className={`text-sm truncate transition-colors ${overdue ? "text-rose" : "text-ink hover:text-muted"}`}>
+                            {it.label}
+                          </Link>
+                        </span>
+                        {it.meta && (
+                          <span className={`text-xs shrink-0 ${overdue ? "text-rose font-medium" : "text-muted"}`}>
+                            {it.meta}
+                          </span>
+                        )}
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
             );

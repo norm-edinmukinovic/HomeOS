@@ -51,3 +51,25 @@ export async function sendEmail(args: SendArgs) {
   }
   return { skipped: false as const, id: data?.id };
 }
+
+// Transakcijski mail (npr. pozivnica) — nema provjere postavki jer primalac
+// nije nuzno korisnik i ovo nije "notifikacija" koju bira da (ne)prima.
+export async function sendRawEmail(args: {
+  to: string; subject: string; react: ReactElement;
+}) {
+  if (!process.env.RESEND_API_KEY) {
+    console.warn("[email] RESEND_API_KEY nije postavljen — preskacem slanje");
+    return { skipped: true as const };
+  }
+  const { data, error } = await resend.emails.send({
+    from: process.env.EMAIL_FROM ?? "Home OS <onboarding@resend.dev>",
+    to: args.to,
+    subject: args.subject,
+    react: args.react,
+  });
+  if (error) {
+    console.error("[email] transakcijski mail nije uspio:", error);
+    return { skipped: false as const, error };
+  }
+  return { skipped: false as const, id: data?.id };
+}

@@ -47,6 +47,7 @@ export interface DashboardItem {
   label: string;
   meta?: string;
   href?: string;
+  tone?: "overdue" | "normal"; // "overdue" -> istaknuto crveno
 }
 
 export interface Command {

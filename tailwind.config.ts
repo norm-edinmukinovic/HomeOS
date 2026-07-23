@@ -19,6 +19,7 @@ const config: Config = {
         lav:   { soft: "#ECE6FA", DEFAULT: "#8574C4" },
         sun:   { soft: "#FBF1D3", DEFAULT: "#C99A17" },
         rose:  { soft: "#FBE4EC", DEFAULT: "#D96A94" },
+        teal:  { soft: "#DEF2EF", DEFAULT: "#2E9E93" },
         slate2:{ soft: "#EBEEF2", DEFAULT: "#647089" },
       },
       fontFamily: {

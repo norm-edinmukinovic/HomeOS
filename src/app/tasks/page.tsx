@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
 import { getContext } from "@/lib/session";
-import { installApps } from "@/lib/apps";
-import { createTask, completeTask } from "@/lib/apps/tasks/actions";
+import { NewTaskForm } from "@/components/NewTaskForm";
+import { TaskItem, type TaskRow } from "@/components/TaskItem";
+import { ListChecks } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -11,71 +11,92 @@ export default async function TasksPage() {
   if (!user) redirect("/login");
   if (!householdId) return <p>Priprema…</p>;
 
-  const { data: tasks } = await db
-    .from("tasks")
-    .select("id, title, status, due_at")
-    .eq("household_id", householdId)
-    .order("created_at", { ascending: false });
+  const [{ data: tasks }, { data: members }] = await Promise.all([
+    db.from("tasks")
+      .select("id, title, status, due_at, priority, tags, assignee_id, recurring, parent_id")
+      .eq("household_id", householdId)
+      .order("due_at", { ascending: true, nullsFirst: false })
+      .order("created_at", { ascending: false }),
+    db.from("household_members")
+      .select("user_id, display_name")
+      .eq("household_id", householdId),
+  ]);
 
-  async function addTask(formData: FormData) {
-    "use server";
-    installApps();
-    const { db, user, householdId } = await getContext();
-    if (!user || !householdId) return;
-    await createTask(db, {
-      householdId, ownerId: user.id,
-      title: String(formData.get("title")),
-      dueAt: formData.get("due") ? new Date(String(formData.get("due"))).toISOString() : null,
-    });
-    revalidatePath("/tasks"); revalidatePath("/");
-  }
+  const memberMap: Record<string, string> = {};
+  (members ?? []).forEach((m) => { memberMap[m.user_id] = m.display_name ?? "Član"; });
+  const memberList = (members ?? []).map((m) => ({ id: m.user_id, name: m.display_name ?? "Član" }));
 
-  async function finish(formData: FormData) {
-    "use server";
-    installApps();
-    const { db, user, householdId } = await getContext();
-    if (!user || !householdId) return;
-    await completeTask(db, householdId, String(formData.get("id")), user.id);
-    revalidatePath("/tasks"); revalidatePath("/");
-  }
+  const all = (tasks ?? []) as (TaskRow & { parent_id: string | null })[];
+  const subByParent: Record<string, TaskRow[]> = {};
+  all.forEach((t) => { if (t.parent_id) (subByParent[t.parent_id] ??= []).push(t); });
+  const top = all.filter((t) => !t.parent_id);
+
+  const startToday = new Date(); startToday.setHours(0, 0, 0, 0);
+  const endToday = new Date(); endToday.setHours(23, 59, 59, 999);
+
+  const active = top.filter((t) => t.status !== "done");
+  const done = top.filter((t) => t.status === "done");
+
+  const overdue = active.filter((t) => t.due_at && new Date(t.due_at) < startToday);
+  const today = active.filter((t) => t.due_at && new Date(t.due_at) >= startToday && new Date(t.due_at) <= endToday);
+  const upcoming = active.filter((t) => t.due_at && new Date(t.due_at) > endToday);
+  const noDate = active.filter((t) => !t.due_at);
+
+  const groups: { title: string; items: TaskRow[]; danger?: boolean }[] = [
+    { title: "Zakašnjelo", items: overdue, danger: true },
+    { title: "Danas", items: today },
+    { title: "Uskoro", items: upcoming },
+    { title: "Bez roka", items: noDate },
+  ].filter((g) => g.items.length > 0);
 
   return (
-    <div>
-      <h1 className="text-2xl font-semibold mb-6">Zadaci</h1>
+    <div className="animate-fade-up">
+      <div className="flex items-center gap-2.5 mb-6">
+        <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-sky-soft text-sky">
+          <ListChecks size={19} strokeWidth={2.2} />
+        </span>
+        <h1 className="text-2xl font-semibold">Zadaci</h1>
+      </div>
 
-      <form action={addTask} className="rounded-xl border border-line bg-white p-4 mb-8 grid gap-3 sm:grid-cols-[1fr_160px_auto]">
-        <input name="title" required placeholder="Novi zadatak"
-          className="rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-accent" />
-        <input name="due" type="date"
-          className="rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-accent" />
-        <button className="rounded-lg bg-accent text-white text-sm px-4 py-2">Dodaj</button>
-      </form>
+      <NewTaskForm members={memberList} />
 
-      <ul className="rounded-xl border border-line bg-white divide-y divide-line">
-        {(tasks ?? []).length === 0 && (
-          <li className="px-4 py-6 text-sm text-muted text-center">Nema zadataka.</li>
-        )}
-        {(tasks ?? []).map((t) => (
-          <li key={t.id} className="px-4 py-3 flex items-center justify-between">
-            <span className={`text-sm ${t.status === "done" ? "line-through text-muted" : ""}`}>
-              {t.title}
-              {t.due_at && (
-                <span className="text-xs text-muted ml-2">
-                  {new Date(t.due_at).toLocaleDateString("bs")}
-                </span>
-              )}
+      {groups.length === 0 && done.length === 0 && (
+        <div className="rounded-2xl border border-dashed border-line bg-white/60 px-6 py-12 text-center shadow-soft">
+          <div className="text-3xl mb-2">✅</div>
+          <p className="text-ink font-medium">Nema zadataka.</p>
+          <p className="text-muted text-sm mt-1">Dodaj prvi gore — otvori „Više opcija" za prioritet, tagove i ponavljanje.</p>
+        </div>
+      )}
+
+      {groups.map((g) => (
+        <section key={g.title} className="mb-6">
+          <h2 className={`text-sm font-medium mb-2 flex items-center gap-2 ${g.danger ? "text-rose" : "text-ink"}`}>
+            {g.title}
+            <span className={`text-xs px-2 py-0.5 rounded-full ${g.danger ? "bg-rose-soft text-rose" : "bg-sky-soft text-sky"}`}>
+              {g.items.length}
             </span>
-            {t.status !== "done" && (
-              <form action={finish}>
-                <input type="hidden" name="id" value={t.id} />
-                <button className="text-xs rounded-full border border-line px-3 py-1 hover:border-accent hover:text-accent">
-                  Završi
-                </button>
-              </form>
-            )}
-          </li>
-        ))}
-      </ul>
+          </h2>
+          <div className="rounded-2xl border border-line bg-white shadow-soft overflow-hidden">
+            {g.items.map((t) => (
+              <TaskItem key={t.id} task={t} subtasks={subByParent[t.id] ?? []} memberMap={memberMap} />
+            ))}
+          </div>
+        </section>
+      ))}
+
+      {done.length > 0 && (
+        <section className="mb-6">
+          <h2 className="text-sm font-medium mb-2 text-muted flex items-center gap-2">
+            Završeno
+            <span className="text-xs px-2 py-0.5 rounded-full bg-slate2-soft text-slate2">{done.length}</span>
+          </h2>
+          <div className="rounded-2xl border border-line bg-white/70 shadow-soft overflow-hidden opacity-80">
+            {done.slice(0, 20).map((t) => (
+              <TaskItem key={t.id} task={t} subtasks={subByParent[t.id] ?? []} memberMap={memberMap} />
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }

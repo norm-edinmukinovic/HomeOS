@@ -5,6 +5,7 @@ import {
   CalendarDays,
   Bell,
   UtensilsCrossed,
+  Users,
   Settings,
   type LucideIcon,
 } from "lucide-react";
@@ -44,6 +45,10 @@ export const appTheme: Record<string, AppTheme> = {
   "meal-planner": {
     icon: UtensilsCrossed, iconBg: "bg-rose-soft", iconText: "text-rose",
     navActive: "bg-rose-soft text-rose", navHover: "hover:bg-rose-soft", ring: "border-rose/30",
+  },
+  members: {
+    icon: Users, iconBg: "bg-teal-soft", iconText: "text-teal",
+    navActive: "bg-teal-soft text-teal", navHover: "hover:bg-teal-soft", ring: "border-teal/30",
   },
   settings: {
     icon: Settings, iconBg: "bg-slate2-soft", iconText: "text-slate2",

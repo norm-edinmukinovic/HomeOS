@@ -45,12 +45,17 @@ export const financeApp: AppManifest = {
           .lte("due_at", in10)
           .order("due_at", { ascending: true })
           .limit(6);
-        return (data ?? []).map((b) => ({
-          id: b.id,
-          label: `${b.title} — ${Number(b.amount).toFixed(2)} KM`,
-          meta: b.due_at ? new Date(b.due_at).toLocaleDateString("bs") : undefined,
-          href: "/finance",
-        }));
+        return (data ?? []).map((b) => {
+          const startToday = new Date(); startToday.setHours(0, 0, 0, 0);
+          const overdue = b.due_at ? new Date(b.due_at) < startToday : false;
+          return {
+            id: b.id,
+            label: `${b.title} — ${Number(b.amount).toFixed(2)} KM`,
+            meta: b.due_at ? (overdue ? "zakasnilo" : new Date(b.due_at).toLocaleDateString("bs")) : undefined,
+            tone: overdue ? ("overdue" as const) : ("normal" as const),
+            href: "/finance",
+          };
+        });
       },
     },
   ],
