@@ -88,3 +88,5 @@ Notes i „Life admin" app-ovi (dokumenti, garancije, liste za kupovinu) — tab
 `notes` već postoje; dodaju se istim obrascem kao ostali app-ovi. Kanban drag&drop
 UI (podatkovni model `board`/`status` je spreman). Realtime sinhronizacija preko
 Supabase Realtime (baza je spremna).
+
+<!-- redeploy trigger -->
