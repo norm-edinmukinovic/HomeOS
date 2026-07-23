@@ -12,8 +12,15 @@ const CATEGORIES: { key: string; label: string; desc: string }[] = [
 ];
 
 export default async function SettingsPage() {
-  const { db, user } = await getContext();
+  const { db, user, username } = await getContext();
   if (!user) redirect("/login");
+
+  async function logout() {
+    "use server";
+    const { db } = await getContext();
+    await db.auth.signOut();
+    redirect("/login");
+  }
 
   const { data: optouts } = await db
     .from("notification_optouts")
@@ -39,7 +46,21 @@ export default async function SettingsPage() {
   return (
     <div>
       <h1 className="text-2xl font-semibold mb-1">Postavke</h1>
-      <p className="text-muted text-sm mb-8">Odaberi koje obavijesti želiš primati e-mailom.</p>
+      <p className="text-muted text-sm mb-6">Nalog i obavijesti.</p>
+
+      <div className="rounded-2xl border border-line bg-white shadow-soft px-4 py-4 mb-6 flex items-center justify-between">
+        <div>
+          <p className="text-sm font-medium text-ink">@{username}</p>
+          <p className="text-xs text-muted">{user.email}</p>
+        </div>
+        <form action={logout}>
+          <button className="text-sm rounded-xl border border-line px-3.5 py-2 text-ink transition-colors hover:border-rose hover:text-rose">
+            Odjava
+          </button>
+        </form>
+      </div>
+
+      <h2 className="text-sm font-medium text-ink mb-2">E-mail obavijesti</h2>
 
       <div className="rounded-xl border border-line bg-white divide-y divide-line">
         {CATEGORIES.map((c) => {

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { installApps } from "@/lib/apps";
 import { navItems } from "@/lib/platform/registry";
-import { NavSidebar } from "@/components/NavSidebar";
+import { AppShell } from "@/components/AppShell";
 
 export const metadata: Metadata = {
   title: "Home OS",
@@ -10,18 +10,12 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  // "Instaliraj" app-ove pri pokretanju. Navigacija se cita iz registra —
-  // nema hardkodirane liste; deveti app se pojavi sam.
   installApps();
   const nav = navItems();
-
   return (
     <html lang="bs">
       <body>
-        <div className="min-h-screen flex">
-          <NavSidebar nav={nav} />
-          <main className="flex-1 px-6 py-8 max-w-4xl">{children}</main>
-        </div>
+        <AppShell nav={nav}>{children}</AppShell>
       </body>
     </html>
   );

@@ -32,10 +32,13 @@ export async function getContext() {
     }
   }
 
+  const username = (user.user_metadata?.username as string | undefined) ?? "";
+
   return {
     db,
     user,
     householdId: membership?.household_id ?? null,
-    displayName: membership?.display_name ?? user.email?.split("@")[0] ?? "",
+    username,
+    displayName: username || membership?.display_name || user.email?.split("@")[0] || "",
   };
 }
