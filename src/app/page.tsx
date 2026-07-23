@@ -2,9 +2,10 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getContext } from "@/lib/session";
 import { installApps } from "@/lib/apps";
-import { loadDashboard, allCommands } from "@/lib/platform/registry";
+import { loadDashboard } from "@/lib/platform/registry";
 import { themeFor } from "@/lib/ui/appTheme";
-import { Plus, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
+import { QuickCapture } from "@/components/QuickCapture";
 
 export const dynamic = "force-dynamic";
 
@@ -22,7 +23,6 @@ export default async function Dashboard() {
   if (!householdId) return <p>Priprema domaćinstva…</p>;
 
   const sections = await loadDashboard({ db, householdId, userId: user.id });
-  const commands = allCommands();
 
   return (
     <div className="animate-fade-up">
@@ -39,24 +39,9 @@ export default async function Dashboard() {
         </p>
       </header>
 
-      {/* Brzo unošenje */}
+      {/* Brzo unošenje (Quick capture) — zadatak / bilješka / podsjetnik */}
       <section className="mb-8">
-        <div className="flex flex-wrap gap-2">
-          {commands.map((c) => {
-            const appId = c.id.split(".")[0];
-            const t = themeFor(appId === "meal" ? "meal-planner" : appId);
-            return (
-              <Link
-                key={c.id}
-                href={c.run ?? "#"}
-                className={`flex items-center gap-1.5 text-sm rounded-full border border-line bg-white px-3.5 py-1.5 shadow-soft transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lift ${t.iconText}`}
-              >
-                <Plus size={15} strokeWidth={2.5} />
-                {c.label}
-              </Link>
-            );
-          })}
-        </div>
+        <QuickCapture />
       </section>
 
       {sections.length === 0 ? (
