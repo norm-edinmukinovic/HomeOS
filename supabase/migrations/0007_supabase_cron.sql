@@ -27,10 +27,10 @@ begin
   end if;
 end $$;
 
--- 3) Podsjetnici — svakih 5 minuta (za "na minutu" stavi '* * * * *').
+-- 3) Podsjetnici — SVAKU MINUTU (provjeri i pošalji čim nešto dospije).
 select cron.schedule(
   'homeos_reminders',
-  '*/5 * * * *',
+  '* * * * *',
   $job$
     select net.http_get(
       url     := '__APP_URL__/api/cron/reminders',

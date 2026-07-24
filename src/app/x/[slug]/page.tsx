@@ -72,7 +72,7 @@ export default async function CustomAppPage({ params }: { params: { slug: string
         <div className="grid gap-3 sm:grid-cols-[1fr_200px_160px]">
           <input name="notes" placeholder="Napomena (opcionalno)"
             className="rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-indigo" />
-          <input name="due" type="datetime-local"
+          <input name="due" lang="en-GB" type="datetime-local"
             className="rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-indigo" />
           <select name="visibility" className="rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-indigo">
             <option value="household">Cijelo domaćinstvo</option>

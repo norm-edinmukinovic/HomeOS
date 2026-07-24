@@ -67,7 +67,7 @@ export default async function RemindersPage() {
 
       <form action={addReminder} className="rounded-xl border border-line bg-white p-4 mb-8 grid grid-cols-2 sm:grid-cols-6 gap-3 [&_input]:w-full [&_input]:min-w-0 [&_select]:w-full [&_select]:min-w-0">
         <input name="title" required placeholder="Podsjeti da…" className="col-span-2 rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-sun" />
-        <input name="fire" type="datetime-local" required className="col-span-2 rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-sun" />
+        <input name="fire" lang="en-GB" type="datetime-local" required className="col-span-2 rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-sun" />
         <select name="target" className="col-span-1 rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-sun">
           {(members ?? []).map((m) => (
             <option key={m.user_id} value={m.user_id}>{m.display_name}{m.user_id === user.id ? " (ja)" : ""}</option>

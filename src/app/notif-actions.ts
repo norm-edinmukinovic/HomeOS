@@ -14,13 +14,16 @@ export async function getDueNotifications(): Promise<NotifItem[]> {
   if (!user || !householdId) return [];
 
   const now = new Date().toISOString();
+  const dayAgo = new Date(Date.now() - 24 * 3600 * 1000).toISOString();
+  // Dospjeli u zadnja 24h (bez obzira na "fired") — da in-app obavijest bude
+  // pouzdana čak i kad cron u međuvremenu označi podsjetnik poslanim.
   const { data } = await db
     .from("reminders")
     .select("id, title, fire_at, target_id")
     .eq("household_id", householdId)
-    .eq("fired", false)
     .lte("fire_at", now)
-    .order("fire_at", { ascending: true })
+    .gte("fire_at", dayAgo)
+    .order("fire_at", { ascending: false })
     .limit(20);
 
   return (data ?? [])

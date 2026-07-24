@@ -651,7 +651,7 @@ function NewEventModal({
             <label className="text-xs text-muted">
               Početak
               <input
-                type="datetime-local"
+                lang="en-GB" type="datetime-local"
                 value={start}
                 onChange={(e) => setStart(e.target.value)}
                 className="mt-1 w-full rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-lav"
@@ -660,7 +660,7 @@ function NewEventModal({
             <label className="text-xs text-muted">
               Kraj (opcionalno)
               <input
-                type="datetime-local"
+                lang="en-GB" type="datetime-local"
                 value={end}
                 onChange={(e) => setEnd(e.target.value)}
                 className="mt-1 w-full rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-lav"
