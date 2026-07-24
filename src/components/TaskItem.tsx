@@ -1,7 +1,7 @@
 "use client";
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Check, Trash2, ChevronRight, ChevronDown, Plus, Repeat, User } from "lucide-react";
+import { Check, Trash2, ChevronRight, ChevronDown, Plus, Repeat } from "lucide-react";
 import { toggleTask, removeTask, addTask } from "@/app/tasks/actions";
 
 export interface TaskRow {
@@ -32,31 +32,41 @@ export function TaskItem({
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [sub, setSub] = useState("");
-  const [pending, start] = useTransition();
+  const [, start] = useTransition();
 
-  const done = task.status === "done";
+  // Optimisticno stanje: trenutni odziv bez cekanja servera
+  const [doneOverride, setDoneOverride] = useState<Record<string, boolean>>({});
+  const [hidden, setHidden] = useState<Set<string>>(new Set());
+
   const startToday = new Date(); startToday.setHours(0, 0, 0, 0);
-  const overdue = !done && task.due_at && new Date(task.due_at) < startToday;
+
+  function isDone(t: TaskRow) {
+    return doneOverride[t.id] ?? (t.status === "done");
+  }
 
   function toggle(t: TaskRow) {
-    start(async () => { await toggleTask(t.id, t.status !== "done"); router.refresh(); });
+    const next = !isDone(t);
+    setDoneOverride((p) => ({ ...p, [t.id]: next })); // odmah vizuelno
+    start(async () => { await toggleTask(t.id, next); router.refresh(); });
   }
   function del(id: string) {
+    setHidden((p) => new Set(p).add(id)); // odmah sakrij
     start(async () => { await removeTask(id); router.refresh(); });
   }
   function addSub() {
     if (!sub.trim()) return;
-    start(async () => { await addTask({ title: sub, parentId: task.id }); setSub(""); router.refresh(); });
+    const val = sub; setSub("");
+    start(async () => { await addTask({ title: val, parentId: task.id }); router.refresh(); });
   }
 
   const Row = ({ t, child = false }: { t: TaskRow; child?: boolean }) => {
-    const tDone = t.status === "done";
+    if (hidden.has(t.id)) return null;
+    const tDone = isDone(t);
     const tOverdue = !tDone && t.due_at && new Date(t.due_at) < startToday;
     return (
       <div className={`flex items-center gap-2.5 px-4 py-2.5 ${child ? "pl-11 bg-paper/40" : ""}`}>
         <button
           onClick={() => toggle(t)}
-          disabled={pending}
           className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-md border transition-colors ${
             tDone ? "bg-mint border-mint text-white" : "border-line hover:border-mint"
           }`}
@@ -91,21 +101,19 @@ export function TaskItem({
             {new Date(t.due_at).toLocaleDateString("bs", { day: "2-digit", month: "2-digit" })}
           </span>
         )}
-        <button onClick={() => del(t.id)} disabled={pending} className="text-muted hover:text-rose shrink-0" aria-label="Obriši">
+        <button onClick={() => del(t.id)} className="text-muted hover:text-rose shrink-0" aria-label="Obriši">
           <Trash2 size={15} />
         </button>
       </div>
     );
   };
 
+  if (hidden.has(task.id)) return null;
+
   return (
     <div className="border-b border-line last:border-0">
       <div className="flex items-center">
-        <button
-          onClick={() => setOpen((o) => !o)}
-          className="pl-2 text-muted hover:text-ink"
-          aria-label="Pod-zadaci"
-        >
+        <button onClick={() => setOpen((o) => !o)} className="pl-2 text-muted hover:text-ink" aria-label="Pod-zadaci">
           {open ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
         </button>
         <div className="flex-1"><Row t={task} /></div>
@@ -122,7 +130,7 @@ export function TaskItem({
               placeholder="+ pod-zadatak"
               className="flex-1 rounded-lg border border-line px-2.5 py-1.5 text-sm outline-none focus:border-sky bg-white"
             />
-            <button onClick={addSub} disabled={pending || !sub.trim()} className="text-sky disabled:opacity-40">
+            <button onClick={addSub} disabled={!sub.trim()} className="text-sky disabled:opacity-40">
               <Plus size={16} strokeWidth={2.5} />
             </button>
           </div>
