@@ -21,6 +21,7 @@ const config: Config = {
         rose:  { soft: "#FBE4EC", DEFAULT: "#D96A94" },
         teal:  { soft: "#DEF2EF", DEFAULT: "#2E9E93" },
         slate2:{ soft: "#EBEEF2", DEFAULT: "#647089" },
+        indigo:{ soft: "#E4E9FF", DEFAULT: "#4C63D2" },
       },
       fontFamily: {
         sans: ["ui-sans-serif", "system-ui", "-apple-system", "Segoe UI", "Roboto", "sans-serif"],

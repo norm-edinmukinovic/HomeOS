@@ -5,6 +5,7 @@ import { calendarApp } from "./calendar/manifest";
 import { remindersApp } from "./reminders/manifest";
 import { mealPlannerApp } from "./meal-planner/manifest";
 import { membersApp } from "./members/manifest";
+import { kanbanApp } from "./kanban/manifest";
 
 // =====================================================================
 // Ovdje se app-ovi "instaliraju" na platformu — samo dodavanjem u listu.
@@ -18,6 +19,7 @@ export function installApps() {
   registerApp(calendarApp);
   registerApp(remindersApp);
   registerApp(mealPlannerApp);
+  registerApp(kanbanApp);
   registerApp(membersApp);
   installed = true;
 }

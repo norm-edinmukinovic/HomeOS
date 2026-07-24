@@ -7,6 +7,7 @@ import {
   UtensilsCrossed,
   Users,
   Settings,
+  LayoutGrid,
   type LucideIcon,
 } from "lucide-react";
 
@@ -45,6 +46,10 @@ export const appTheme: Record<string, AppTheme> = {
   "meal-planner": {
     icon: UtensilsCrossed, iconBg: "bg-rose-soft", iconText: "text-rose",
     navActive: "bg-rose-soft text-rose", navHover: "hover:bg-rose-soft", ring: "border-rose/30",
+  },
+  kanban: {
+    icon: LayoutGrid, iconBg: "bg-indigo-soft", iconText: "text-indigo",
+    navActive: "bg-indigo-soft text-indigo", navHover: "hover:bg-indigo-soft", ring: "border-indigo/30",
   },
   members: {
     icon: Users, iconBg: "bg-teal-soft", iconText: "text-teal",

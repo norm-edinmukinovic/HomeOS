@@ -100,3 +100,16 @@ export async function completeTask(
 export async function reopenTask(db: SupabaseClient, taskId: string) {
   await db.from("tasks").update({ status: "todo" }).eq("id", taskId);
 }
+
+// Javna akcija: postavi status zadatka ('todo' | 'doing' | 'done').
+// Kanban je koristi za pomjeranje kartica izmedju kolona umjesto da sam
+// pise u tabelu ("build on what exists"). Za 'done' se preporucuje
+// completeTask (zbog ponavljanja + eventa); ovo je za 'todo'/'doing'.
+export async function setTaskStatus(
+  db: SupabaseClient,
+  taskId: string,
+  status: "todo" | "doing" | "done"
+) {
+  const { error } = await db.from("tasks").update({ status }).eq("id", taskId);
+  if (error) throw error;
+}
