@@ -4,7 +4,7 @@ import {
   Wallet,
   CalendarDays,
   Bell,
-  UtensilsCrossed,
+  Sparkles,
   Users,
   Settings,
   LayoutGrid,
@@ -45,10 +45,6 @@ export const appTheme: Record<string, AppTheme> = {
     icon: Bell, iconBg: "bg-sun-soft", iconText: "text-sun",
     navActive: "bg-sun-soft text-sun", navHover: "hover:bg-sun-soft", ring: "border-sun/30",
   },
-  "meal-planner": {
-    icon: UtensilsCrossed, iconBg: "bg-rose-soft", iconText: "text-rose",
-    navActive: "bg-rose-soft text-rose", navHover: "hover:bg-rose-soft", ring: "border-rose/30",
-  },
   kanban: {
     icon: LayoutGrid, iconBg: "bg-indigo-soft", iconText: "text-indigo",
     navActive: "bg-indigo-soft text-indigo", navHover: "hover:bg-indigo-soft", ring: "border-indigo/30",
@@ -65,6 +61,10 @@ export const appTheme: Record<string, AppTheme> = {
     icon: Users, iconBg: "bg-teal-soft", iconText: "text-teal",
     navActive: "bg-teal-soft text-teal", navHover: "hover:bg-teal-soft", ring: "border-teal/30",
   },
+  custom: {
+    icon: Sparkles, iconBg: "bg-indigo-soft", iconText: "text-indigo",
+    navActive: "bg-indigo-soft text-indigo", navHover: "hover:bg-indigo-soft", ring: "border-indigo/30",
+  },
   settings: {
     icon: Settings, iconBg: "bg-slate2-soft", iconText: "text-slate2",
     navActive: "bg-slate2-soft text-slate2", navHover: "hover:bg-slate2-soft", ring: "border-slate2/30",
@@ -72,5 +72,6 @@ export const appTheme: Record<string, AppTheme> = {
 };
 
 export function themeFor(id: string): AppTheme {
-  return appTheme[id] ?? appTheme.dashboard;
+  if (id.startsWith("x:")) return appTheme.custom;
+  return appTheme[id] ?? appTheme.custom;
 }

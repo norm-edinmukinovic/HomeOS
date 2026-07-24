@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { installApps } from "@/lib/apps";
-import { navItems } from "@/lib/platform/registry";
+import { getVisibleNav } from "@/lib/platform/nav";
 import { AppShell } from "@/components/AppShell";
 
 export const metadata: Metadata = {
@@ -9,9 +8,8 @@ export const metadata: Metadata = {
   description: "Jedno mjesto za sve u domaćinstvu.",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  installApps();
-  const nav = navItems();
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const nav = await getVisibleNav();
   return (
     <html lang="bs">
       <body>

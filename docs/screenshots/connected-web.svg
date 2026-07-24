@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" font-family="ui-sans-serif, system-ui, sans-serif">
+  <rect width="760" height="420" fill="#FAF7F2"/>
+  <text x="380" y="34" text-anchor="middle" font-size="18" font-weight="700" fill="#2C2A33">Home OS — povezane aplikacije (connected web)</text>
+
+  <!-- nodes -->
+  <g>
+    <rect x="300" y="70" width="160" height="46" rx="12" fill="#FDEAD9" stroke="#E28A57"/>
+    <text x="380" y="98" text-anchor="middle" font-size="14" fill="#2C2A33">Finansije (račun)</text>
+
+    <rect x="300" y="180" width="160" height="46" rx="12" fill="#E2F0FB" stroke="#3E92CC"/>
+    <text x="380" y="208" text-anchor="middle" font-size="14" fill="#2C2A33">Zadatak „Plati…"</text>
+
+    <rect x="80" y="180" width="160" height="46" rx="12" fill="#ECE6FA" stroke="#8574C4"/>
+    <text x="160" y="208" text-anchor="middle" font-size="14" fill="#2C2A33">Kalendar</text>
+
+    <rect x="520" y="180" width="160" height="46" rx="12" fill="#FBF1D3" stroke="#C99A17"/>
+    <text x="600" y="208" text-anchor="middle" font-size="14" fill="#2C2A33">Podsjetnici</text>
+
+    <rect x="80" y="300" width="160" height="46" rx="12" fill="#E6F0EA" stroke="#3C7A5E"/>
+    <text x="160" y="328" text-anchor="middle" font-size="13" fill="#2C2A33">Kućni ured (obnova)</text>
+
+    <rect x="300" y="300" width="160" height="46" rx="12" fill="#FFF6DA" stroke="#B8860B"/>
+    <text x="380" y="328" text-anchor="middle" font-size="14" fill="#2C2A33">Bilješke</text>
+
+    <rect x="520" y="300" width="160" height="46" rx="12" fill="#E4E9FF" stroke="#4C63D2"/>
+    <text x="600" y="328" text-anchor="middle" font-size="14" fill="#2C2A33">Moja app (custom)</text>
+  </g>
+
+  <!-- edges -->
+  <g stroke="#837D89" stroke-width="1.6" fill="none">
+    <path d="M380 116 L380 180" marker-end="url(#a)"/>
+    <path d="M300 203 L240 203" marker-end="url(#a)"/>
+    <path d="M240 323 L300 210" marker-end="url(#a)"/>
+    <path d="M160 300 L160 226" marker-end="url(#a)"/>
+    <path d="M600 300 C 600 250, 460 210, 460 203" marker-end="url(#a)"/>
+    <path d="M600 300 L600 226" marker-end="url(#a)"/>
+    <path d="M460 323 C 520 323, 520 210, 460 203" marker-end="url(#a)"/>
+  </g>
+
+  <g font-size="11" fill="#837D89">
+    <text x="388" y="152">bill.created → task</text>
+    <text x="150" y="168">rok → u kalendaru</text>
+    <text x="150" y="285">expiry → podsjetnik</text>
+    <text x="470" y="285">custom → task/kalendar/podsjetnik</text>
+  </g>
+
+  <defs>
+    <marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0 0 L6 3 L0 6 z" fill="#837D89"/>
+    </marker>
+  </defs>
+</svg>

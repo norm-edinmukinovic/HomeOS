@@ -129,15 +129,15 @@ export default async function FinancePage() {
         {/* Transakcije */}
         <div>
           <h2 className="text-sm font-medium mb-2">Prihodi i rashodi</h2>
-          <form action={addTxn} className="rounded-xl border border-line bg-white p-4 mb-3 grid gap-3 sm:grid-cols-[110px_1fr_110px_130px_auto] shadow-soft">
-            <select name="kind" className="rounded-lg border border-line px-2 py-2 text-sm outline-none focus:border-peach">
+          <form action={addTxn} className="rounded-xl border border-line bg-white p-4 mb-3 grid gap-3 grid-cols-2 sm:grid-cols-6 shadow-soft">
+            <select name="kind" className="col-span-2 sm:col-span-1 rounded-lg border border-line px-2 py-2 text-sm outline-none focus:border-peach">
               <option value="expense">Rashod</option>
               <option value="income">Prihod</option>
             </select>
-            <input name="title" required placeholder="Opis" className="rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-peach" />
+            <input name="title" required placeholder="Opis" className="col-span-2 rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-peach" />
             <input name="amount" type="number" step="0.01" placeholder="Iznos" className="rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-peach" />
             <input name="category" placeholder="Kategorija" className="rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-peach" />
-            <button className="rounded-lg bg-peach text-white text-sm px-3">Dodaj</button>
+            <button className="rounded-lg bg-peach text-white text-sm px-3 py-2">Dodaj</button>
           </form>
           <ul className="rounded-xl border border-line bg-white divide-y divide-line">
             {(txns ?? []).length === 0 && <li className="px-4 py-6 text-sm text-muted text-center">Nema transakcija ovaj mjesec.</li>}
@@ -157,10 +157,10 @@ export default async function FinancePage() {
         {/* Budžeti */}
         <div>
           <h2 className="text-sm font-medium mb-2">Budžeti po kategoriji (mjesečno)</h2>
-          <form action={saveBudget} className="rounded-xl border border-line bg-white p-4 mb-3 grid gap-3 grid-cols-[1fr_130px_auto] shadow-soft">
-            <input name="category" required placeholder="Kategorija" className="rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-peach" />
-            <input name="limit" type="number" step="0.01" required placeholder="Limit" className="rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-peach" />
-            <button className="rounded-lg bg-peach text-white text-sm px-3">Postavi</button>
+          <form action={saveBudget} className="rounded-xl border border-line bg-white p-4 mb-3 grid gap-3 grid-cols-2 sm:grid-cols-4 shadow-soft">
+            <input name="category" required placeholder="Kategorija" className="col-span-2 rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-peach" />
+            <input name="limit" type="number" step="0.01" required placeholder="Limit (KM)" className="rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-peach" />
+            <button className="rounded-lg bg-peach text-white text-sm px-3 py-2">Postavi</button>
           </form>
           <div className="rounded-xl border border-line bg-white divide-y divide-line">
             {(budgets ?? []).length === 0 && <p className="px-4 py-6 text-sm text-muted text-center">Nema budžeta.</p>}
@@ -187,19 +187,17 @@ export default async function FinancePage() {
       {/* Računi i pretplate */}
       <div className="mt-8">
         <h2 className="text-sm font-medium mb-2 flex items-center gap-1.5"><CalendarClock size={15} /> Računi i pretplate</h2>
-        <form action={addBill} className="rounded-xl border border-line bg-white p-4 mb-3 grid gap-3 sm:grid-cols-[1fr_110px_130px_140px_auto] shadow-soft">
-          <input name="title" required placeholder="npr. Struja" className="rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-peach" />
+        <form action={addBill} className="rounded-xl border border-line bg-white p-4 mb-3 grid gap-3 grid-cols-2 sm:grid-cols-6 shadow-soft">
+          <input name="title" required placeholder="npr. Struja" className="col-span-2 rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-peach" />
           <input name="amount" type="number" step="0.01" placeholder="Iznos" className="rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-peach" />
           <input name="category" placeholder="Kategorija" className="rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-peach" />
-          <div className="flex gap-2">
-            <input name="due" type="date" className="w-full rounded-lg border border-line px-2 py-2 text-sm outline-none focus:border-peach" />
-          </div>
+          <input name="due" type="date" className="rounded-lg border border-line px-2 py-2 text-sm outline-none focus:border-peach" />
           <select name="recurring" className="rounded-lg border border-line px-2 py-2 text-sm outline-none focus:border-peach">
             <option value="">Jednokratno</option>
             <option value="monthly">Mjesečno</option>
             <option value="yearly">Godišnje</option>
           </select>
-          <button className="rounded-lg bg-peach text-white text-sm px-3 sm:col-span-5 sm:justify-self-end sm:w-auto">Dodaj račun</button>
+          <button className="col-span-2 sm:col-span-6 sm:justify-self-end rounded-lg bg-peach text-white text-sm px-4 py-2">Dodaj račun</button>
         </form>
         <ul className="rounded-xl border border-line bg-white divide-y divide-line">
           {(bills ?? []).length === 0 && <li className="px-4 py-6 text-sm text-muted text-center">Još nema računa.</li>}

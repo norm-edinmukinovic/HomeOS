@@ -3,6 +3,8 @@ import { redirect } from "next/navigation";
 import { getContext } from "@/lib/session";
 import { installApps } from "@/lib/apps";
 import { loadDashboard } from "@/lib/platform/registry";
+import { loadCustomApps, loadCustomDashboard } from "@/lib/platform/custom";
+import { disabledAppIds } from "@/lib/platform/nav";
 import { themeFor } from "@/lib/ui/appTheme";
 import { Sparkles } from "lucide-react";
 import { QuickCapture } from "@/components/QuickCapture";
@@ -23,7 +25,14 @@ export default async function Dashboard() {
   if (!user) redirect("/login");
   if (!householdId) return <p>Priprema domaćinstva…</p>;
 
-  const sections = await loadDashboard({ db, householdId, userId: user.id });
+  const ctx = { db, householdId, userId: user.id };
+  const [builtin, customApps, disabled] = await Promise.all([
+    loadDashboard(ctx),
+    loadCustomApps(db, householdId),
+    disabledAppIds(),
+  ]);
+  const custom = await loadCustomDashboard(customApps, ctx);
+  const sections = [...builtin, ...custom].filter((s) => !disabled.has(s.appId));
 
   return (
     <div className="animate-fade-up">

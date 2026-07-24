@@ -11,12 +11,22 @@ import {
   useSensors,
   useDraggable,
   useDroppable,
-  closestCorners,
+  pointerWithin,
+  rectIntersection,
+  type CollisionDetection,
   type DragStartEvent,
   type DragEndEvent,
 } from "@dnd-kit/core";
 import { Plus, Repeat, X } from "lucide-react";
 import { moveTask, addCard } from "@/app/kanban/actions";
+
+// Drop tamo gdje JE kursor: prvo pointerWithin (precizno, po poziciji miša),
+// pa rectIntersection kao rezerva. Puno prirodnije od closestCorners —
+// ne treba pretjerano pomjerati u stranu da bi se ispustilo.
+const collisionDetection: CollisionDetection = (args) => {
+  const pointer = pointerWithin(args);
+  return pointer.length > 0 ? pointer : rectIntersection(args);
+};
 
 export type Status = "todo" | "doing" | "done";
 
@@ -148,7 +158,7 @@ function Column({
   return (
     <div
       ref={setNodeRef}
-      className={`flex min-h-[8rem] flex-col rounded-2xl border p-3 transition-colors ${
+      className={`flex min-h-[24rem] flex-col rounded-2xl border p-3 transition-colors ${
         isOver ? "border-indigo/40 bg-indigo-soft/40" : "border-line bg-white/60"
       }`}
     >
@@ -330,7 +340,7 @@ export function KanbanBoard({
       {/* Kolone */}
       <DndContext
         sensors={sensors}
-        collisionDetection={closestCorners}
+        collisionDetection={collisionDetection}
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
         onDragCancel={() => setActiveId(null)}
