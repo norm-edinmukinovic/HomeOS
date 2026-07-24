@@ -8,6 +8,8 @@ import {
   Users,
   Settings,
   LayoutGrid,
+  StickyNote,
+  Archive,
   type LucideIcon,
 } from "lucide-react";
 
@@ -50,6 +52,14 @@ export const appTheme: Record<string, AppTheme> = {
   kanban: {
     icon: LayoutGrid, iconBg: "bg-indigo-soft", iconText: "text-indigo",
     navActive: "bg-indigo-soft text-indigo", navHover: "hover:bg-indigo-soft", ring: "border-indigo/30",
+  },
+  notes: {
+    icon: StickyNote, iconBg: "bg-note-soft", iconText: "text-note",
+    navActive: "bg-note-soft text-note", navHover: "hover:bg-note-soft", ring: "border-note/30",
+  },
+  "life-admin": {
+    icon: Archive, iconBg: "bg-life-soft", iconText: "text-life",
+    navActive: "bg-life-soft text-life", navHover: "hover:bg-life-soft", ring: "border-life/30",
   },
   members: {
     icon: Users, iconBg: "bg-teal-soft", iconText: "text-teal",

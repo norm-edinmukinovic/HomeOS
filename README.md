@@ -82,9 +82,19 @@ npm run dev                  # http://localhost:3000
 | Apps sarađuju bez direktne veze | event bus `platform/events.ts` |
 | Proširivost / novi app | `AppManifest`, `registry.ts`, `apps/meal-planner` |
 
-## Što je namjerno ostavljeno kao vježba
+## Status app-ova (svih 8 iz zadatka)
 
-Notes i „Life admin" app-ovi (dokumenti, garancije, liste za kupovinu) — tabele
-`notes` već postoje; dodaju se istim obrascem kao ostali app-ovi. Kanban drag&drop
-UI (podatkovni model `board`/`status` je spreman). Realtime sinhronizacija preko
-Supabase Realtime (baza je spremna).
+- **Dashboard „Danas"** — pretraga + quick capture + kartice svih app-ova.
+- **Tasks** — rokovi, prioriteti, odgovorni, pod-zadaci, tagovi, ponavljanje.
+- **Kanban** — više ploča, drag & drop (`@dnd-kit`).
+- **Kalendar** — mjesec / sedmica / dan; zadaci s rokom i dijeljeni događaji u istom pogledu.
+- **Podsjetnici** — jednokratni + ponavljajući, usmjereni na člana, in-app + email (cron).
+- **Bilješke** — tagovi, dnevnik, povezivanje na zadatak/račun/događaj (`links`).
+- **Finansije** — prihodi/rashodi po kategoriji, budžeti, računi/pretplate, mjesečni
+  sažetak, „ko je platio / ko duguje".
+- **Kućni ured (Life admin)** — dokumenti, garancije, obnove, kontakti; rok obnove
+  automatski kreira podsjetnik (koristi postojeći Reminders app); dijeljene liste.
+
+> Migracija baze: pokreni `supabase/migrations/0005_finance_notes_lifeadmin.sql`
+> u Supabase SQL Editoru (nakon 0001–0004). Realtime sinhronizacija preko Supabase
+> Realtime ostaje kao moguće proširenje (baza je spremna).

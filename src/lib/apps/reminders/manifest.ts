@@ -4,7 +4,7 @@ export const remindersApp: AppManifest = {
   id: "reminders",
   name: "Podsjetnici",
   route: "/reminders",
-  publishes: ["reminder.fired"],
+  publishes: ["reminder.fired", "reminder.created"],
   requiredAccess: ["read:reminders", "create:reminders"],
   commands: [{ id: "reminders.new", label: "Novi podsjetnik", run: "/reminders?new=1" }],
   dashboardCards: [
