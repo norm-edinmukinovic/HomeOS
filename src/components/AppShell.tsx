@@ -25,6 +25,7 @@ export function AppShell({ nav, children }: { nav: NavItem[]; children: React.Re
     { id: "dashboard", name: "Danas", route: "/" },
     ...nav,
     { id: "settings", name: "Postavke", route: "/settings" },
+    { id: "help", name: "Pomoć", route: "/pomoc" },
   ];
 
   const NavList = () => (

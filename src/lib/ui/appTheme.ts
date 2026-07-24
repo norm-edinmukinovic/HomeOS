@@ -10,6 +10,7 @@ import {
   LayoutGrid,
   StickyNote,
   Archive,
+  HelpCircle,
   type LucideIcon,
 } from "lucide-react";
 
@@ -64,6 +65,10 @@ export const appTheme: Record<string, AppTheme> = {
   custom: {
     icon: Sparkles, iconBg: "bg-indigo-soft", iconText: "text-indigo",
     navActive: "bg-indigo-soft text-indigo", navHover: "hover:bg-indigo-soft", ring: "border-indigo/30",
+  },
+  help: {
+    icon: HelpCircle, iconBg: "bg-mint-soft", iconText: "text-accent",
+    navActive: "bg-mint-soft text-accent", navHover: "hover:bg-mint-soft", ring: "border-accent/30",
   },
   settings: {
     icon: Settings, iconBg: "bg-slate2-soft", iconText: "text-slate2",
