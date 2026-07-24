@@ -21,7 +21,7 @@ export const remindersApp: AppManifest = {
         return (data ?? []).map((r) => ({
           id: r.id,
           label: r.title,
-          meta: new Date(r.fire_at).toLocaleString("bs", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" }),
+          meta: new Date(r.fire_at).toLocaleString("bs", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit", hour12: false }),
           href: "/reminders",
         }));
       },

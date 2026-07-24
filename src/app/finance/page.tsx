@@ -129,7 +129,7 @@ export default async function FinancePage() {
         {/* Transakcije */}
         <div>
           <h2 className="text-sm font-medium mb-2">Prihodi i rashodi</h2>
-          <form action={addTxn} className="rounded-xl border border-line bg-white p-4 mb-3 grid gap-3 grid-cols-2 sm:grid-cols-6 shadow-soft">
+          <form action={addTxn} className="rounded-xl border border-line bg-white p-4 mb-3 grid gap-3 grid-cols-2 sm:grid-cols-6 shadow-soft [&_input]:w-full [&_input]:min-w-0 [&_select]:w-full [&_select]:min-w-0">
             <select name="kind" className="col-span-2 sm:col-span-1 rounded-lg border border-line px-2 py-2 text-sm outline-none focus:border-peach">
               <option value="expense">Rashod</option>
               <option value="income">Prihod</option>
@@ -157,7 +157,7 @@ export default async function FinancePage() {
         {/* Budžeti */}
         <div>
           <h2 className="text-sm font-medium mb-2">Budžeti po kategoriji (mjesečno)</h2>
-          <form action={saveBudget} className="rounded-xl border border-line bg-white p-4 mb-3 grid gap-3 grid-cols-2 sm:grid-cols-4 shadow-soft">
+          <form action={saveBudget} className="rounded-xl border border-line bg-white p-4 mb-3 grid gap-3 grid-cols-2 sm:grid-cols-4 shadow-soft [&_input]:w-full [&_input]:min-w-0">
             <input name="category" required placeholder="Kategorija" className="col-span-2 rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-peach" />
             <input name="limit" type="number" step="0.01" required placeholder="Limit (KM)" className="rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-peach" />
             <button className="rounded-lg bg-peach text-white text-sm px-3 py-2">Postavi</button>
@@ -187,7 +187,7 @@ export default async function FinancePage() {
       {/* Računi i pretplate */}
       <div className="mt-8">
         <h2 className="text-sm font-medium mb-2 flex items-center gap-1.5"><CalendarClock size={15} /> Računi i pretplate</h2>
-        <form action={addBill} className="rounded-xl border border-line bg-white p-4 mb-3 grid gap-3 grid-cols-2 sm:grid-cols-6 shadow-soft">
+        <form action={addBill} className="rounded-xl border border-line bg-white p-4 mb-3 grid gap-3 grid-cols-2 sm:grid-cols-6 shadow-soft [&_input]:w-full [&_input]:min-w-0 [&_select]:w-full [&_select]:min-w-0">
           <input name="title" required placeholder="npr. Struja" className="col-span-2 rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-peach" />
           <input name="amount" type="number" step="0.01" placeholder="Iznos" className="rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-peach" />
           <input name="category" placeholder="Kategorija" className="rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-peach" />

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { themeFor } from "@/lib/ui/appTheme";
+import { NotificationBell } from "@/components/NotificationBell";
 
 type NavItem = { id: string; name: string; route: string };
 
@@ -56,6 +57,7 @@ export function AppShell({ nav, children }: { nav: NavItem[]; children: React.Re
 
   return (
     <div className="min-h-screen">
+      <NotificationBell />
       {/* Mobilna gornja traka */}
       <header className="md:hidden sticky top-0 z-30 flex items-center justify-between border-b border-line bg-paper/90 backdrop-blur px-4 py-3">
         <Link href="/" className="flex items-center gap-2">

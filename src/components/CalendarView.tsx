@@ -68,7 +68,7 @@ function startOfWeek(d: Date) {
 const WEEKDAYS = ["Pon", "Uto", "Sri", "Čet", "Pet", "Sub", "Ned"];
 
 function fmtTime(d: Date) {
-  return d.toLocaleTimeString("bs", { hour: "2-digit", minute: "2-digit" });
+  return d.toLocaleTimeString("bs", { hour: "2-digit", minute: "2-digit", hour12: false });
 }
 function toLocalInput(d: Date) {
   const p = (n: number) => String(n).padStart(2, "0");

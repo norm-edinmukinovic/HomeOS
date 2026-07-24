@@ -65,20 +65,20 @@ export default async function RemindersPage() {
         Jednokratni i ponavljajući, usmjereni na određenog člana. Kad dospiju, cron ih pošalje e-mailom (ako je kategorija uključena).
       </p>
 
-      <form action={addReminder} className="rounded-xl border border-line bg-white p-4 mb-8 grid gap-3 sm:grid-cols-[1fr_180px_150px_130px_auto]">
-        <input name="title" required placeholder="Podsjeti da…" className="rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-sun" />
-        <input name="fire" type="datetime-local" required className="rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-sun" />
-        <select name="target" className="rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-sun">
+      <form action={addReminder} className="rounded-xl border border-line bg-white p-4 mb-8 grid grid-cols-2 sm:grid-cols-6 gap-3 [&_input]:w-full [&_input]:min-w-0 [&_select]:w-full [&_select]:min-w-0">
+        <input name="title" required placeholder="Podsjeti da…" className="col-span-2 rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-sun" />
+        <input name="fire" type="datetime-local" required className="col-span-2 rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-sun" />
+        <select name="target" className="col-span-1 rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-sun">
           {(members ?? []).map((m) => (
             <option key={m.user_id} value={m.user_id}>{m.display_name}{m.user_id === user.id ? " (ja)" : ""}</option>
           ))}
         </select>
-        <select name="recurring" className="rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-sun">
+        <select name="recurring" className="col-span-1 rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-sun">
           <option value="">Jednokratno</option>
           <option value="daily">Svaki dan</option>
           <option value="weekly">Svake sedmice</option>
         </select>
-        <button className="rounded-lg bg-sun text-white text-sm px-4 py-2">Dodaj</button>
+        <button className="col-span-2 sm:col-span-6 sm:justify-self-end rounded-lg bg-sun text-white text-sm px-4 py-2">Dodaj</button>
       </form>
 
       <ul className="rounded-xl border border-line bg-white divide-y divide-line">
@@ -93,7 +93,7 @@ export default async function RemindersPage() {
                   {r.recurring && <RotateCw size={12} className="inline ml-1.5 mb-0.5 text-muted" />}
                 </p>
                 <p className="text-xs text-muted">
-                  {new Date(r.fire_at).toLocaleString("bs")} · za {nameOf(r.target_id)}
+                  {new Date(r.fire_at).toLocaleString("bs", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit", hour12: false })} · za {nameOf(r.target_id)}
                   {due && <span className="ml-2 text-warn">dospjelo</span>}
                 </p>
               </div>

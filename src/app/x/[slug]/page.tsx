@@ -100,7 +100,7 @@ export default async function CustomAppPage({ params }: { params: { slug: string
               </span>
             </form>
             <div className="flex items-center gap-3 shrink-0">
-              {it.due_at && <span className="text-xs text-muted">{new Date(it.due_at).toLocaleString("bs", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })}</span>}
+              {it.due_at && <span className="text-xs text-muted">{new Date(it.due_at).toLocaleString("bs", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit", hour12: false })}</span>}
               <form action={remove}>
                 <input type="hidden" name="id" value={it.id} />
                 <button className="text-muted hover:text-rose" aria-label="Obriši"><Trash2 size={15} /></button>

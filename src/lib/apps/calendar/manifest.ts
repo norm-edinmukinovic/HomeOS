@@ -23,7 +23,7 @@ export const calendarApp: AppManifest = {
         return (data ?? []).map((ev) => ({
           id: ev.id,
           label: ev.title,
-          meta: new Date(ev.starts_at).toLocaleTimeString("bs", { hour: "2-digit", minute: "2-digit" }),
+          meta: new Date(ev.starts_at).toLocaleTimeString("bs", { hour: "2-digit", minute: "2-digit", hour12: false }),
           href: "/calendar",
         }));
       },

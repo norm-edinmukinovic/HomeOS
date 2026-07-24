@@ -131,7 +131,7 @@ sarađuju bez direktne međuovisnosti.
 ## Tehnička postavka (za pokretanje / deploy)
 
 **Stack:** Next.js (App Router) + React + TypeScript, Supabase (Postgres + Auth + RLS),
-e-mail preko SMTP-a ili Resend-a, Vercel (hosting + Cron).
+e-mail preko Brevo-a, Vercel (hosting), Supabase pg_cron (raspored).
 
 ### 1. Supabase
 1. Napravi projekat na supabase.com.
@@ -161,8 +161,11 @@ npm run dev                  # http://localhost:3000
 2. U **Settings → Environment Variables** dodaj sve iz `.env.example`
    (`NEXT_PUBLIC_APP_URL` na svoju Vercel adresu; po želji `NEXT_PUBLIC_HELP_URL`
    na link ovog README-a na GitHub-u — koristi ga dugme „Pomoć").
-3. Cron iz `vercel.json` (`/api/cron/reminders`, `/api/cron/digest`) aktivira se sam;
-   rute su zaštićene `CRON_SECRET`-om.
+3. Raspored (podsjetnici + dnevni sažetak) ide preko **Supabase pg_cron**, ne Vercel
+   Cron-a (Hobby plan ide samo jednom dnevno). Pokreni `supabase/migrations/0007_supabase_cron.sql`
+   i u njemu zamijeni `__APP_URL__` (svoja Vercel adresa) i `__CRON_SECRET__` (ista kao u
+   Vercel env). Supabase tada svakih par minuta poziva `/api/cron/reminders` i dnevno
+   `/api/cron/digest`; rute su zaštićene `CRON_SECRET`-om.
 
 ### Proširivost
 Novi app se „instalira" dodavanjem manifesta u `src/lib/apps/index.ts` (jedna linija),
